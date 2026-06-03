@@ -1,0 +1,65 @@
+import { useState, useCallback, useEffect } from 'react'
+import { Layout } from '../components/layout/Layout'
+import { TeamKPIs } from '../components/team/TeamKPIs'
+import { FunnelChart } from '../components/team/FunnelChart'
+import { LeadTable } from '../components/team/LeadTable'
+import { TimeSeriesChart } from '../components/team/TimeSeriesChart'
+import { HeatmapChart } from '../components/team/HeatmapChart'
+import { useTeamKPIs } from '../hooks/useTeamKPIs'
+import { useConversations } from '../hooks/useConversations'
+import { useFunnelData } from '../hooks/useFunnelData'
+import { useHeatmapData } from '../hooks/useHeatmapData'
+import { supabase } from '../lib/supabase'
+
+export function TeamDashboard() {
+  const [refreshKey, setRefreshKey] = useState(0)
+  const refresh = useCallback(() => setRefreshKey(k => k + 1), [])
+
+  // Realtime: re-fetch when any conversation changes
+  useEffect(() => {
+    const channel = supabase
+      .channel('team-dashboard-rt')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'conversations' },
+        refresh,
+      )
+      .subscribe()
+
+    return () => { void supabase.removeChannel(channel) }
+  }, [refresh])
+
+  const { kpis, loading: kpisLoading } = useTeamKPIs(refreshKey)
+  const { conversations, loading: convsLoading } = useConversations(refreshKey)
+  const { steps, loading: funnelLoading } = useFunnelData(refreshKey)
+  const { cells, loading: heatmapLoading } = useHeatmapData()
+
+  return (
+    <Layout>
+      <div className="space-y-8">
+        <div>
+          <h1 className="font-heading font-semibold text-2xl text-charcoal mb-1">
+            Team Dashboard
+          </h1>
+          <p className="font-body text-sm text-charcoal/50">
+            WhatsApp intake funnel · live data
+          </p>
+        </div>
+
+        <TeamKPIs kpis={kpis} loading={kpisLoading} />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <FunnelChart steps={steps} loading={funnelLoading} />
+          <TimeSeriesChart />
+        </div>
+
+        <HeatmapChart cells={cells} loading={heatmapLoading} />
+
+        <div>
+          <h2 className="font-heading font-semibold text-lg text-charcoal mb-4">Lead inbox</h2>
+          <LeadTable conversations={conversations} loading={convsLoading} />
+        </div>
+      </div>
+    </Layout>
+  )
+}
