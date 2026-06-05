@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { Button } from '../components/ui/Button'
 import { Spinner } from '../components/ui/Spinner'
+import { SBHLogo } from '../components/ui/SBHLogo'
 
 export function LoginPage() {
   const { signIn, session, role, loading } = useAuth()
@@ -44,21 +45,10 @@ export function LoginPage() {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
-        {/* Logos */}
-        <div className="text-center mb-8">
-          <img
-            src="/brand-assets/SBH_Primary_logo.jpg"
-            alt=""
-            className="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-2 border-surface shadow-sm"
-            onError={(e) => { e.currentTarget.style.display = 'none' }}
-          />
-          <img
-            src="/brand-assets/SBH_Secondary_logo.png"
-            alt="Small Business Helpdesk"
-            className="h-10 mx-auto object-contain"
-            onError={(e) => { e.currentTarget.style.display = 'none' }}
-          />
-          <p className="font-body text-sm text-charcoal/40 mt-2">There when you need us.</p>
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-8">
+          <SBHLogo variant="color" className="h-12 w-auto" />
+          <p className="font-body text-sm text-charcoal/40 mt-3">There when you need us.</p>
         </div>
 
         {/* Card */}

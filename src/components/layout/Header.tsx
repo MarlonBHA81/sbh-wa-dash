@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { Button } from '../ui/Button'
+import { SBHLogo } from '../ui/SBHLogo'
 
 export function Header() {
   const { signOut, role } = useAuth()
@@ -12,17 +13,7 @@ export function Header() {
 
   return (
     <header className="bg-charcoal-dark h-16 flex items-center px-6 justify-between shrink-0">
-      <img
-        src="/brand-assets/SBH_Secondary_logo_white.png"
-        alt="Small Business Helpdesk"
-        className="h-8 w-auto object-contain"
-        onError={(e) => {
-          const t = e.currentTarget
-          t.style.display = 'none'
-          t.nextElementSibling?.classList.remove('hidden')
-        }}
-      />
-      <span className="hidden font-heading font-semibold text-white text-sm">SBH Analytics</span>
+      <SBHLogo variant="white" className="h-7 w-auto" />
 
       <div className="flex items-center gap-3">
         {canSwitchViews && (
