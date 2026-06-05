@@ -1,12 +1,12 @@
 # Orbie — Small Business Helpdesk WhatsApp Workflow
 
-**File:** `WF_SBHelpdesk_Orbie_Vendor__v1.1.2.json`
+**File:** `WF_SBHelpdesk_Orbie_Vendor__v1.2.1.json`
 **Stack:** n8n + WhatsApp Business Cloud API (native `whatsApp` node) + Anthropic Claude (Sonnet 4.5) + Brevo (contacts) + Supabase (analytics)
 **Timezone:** Africa/Johannesburg
 
 ## Versioning
 
-Semantic versioning: `__vMAJOR.MINOR`. Bump MINOR (v1.1, v1.2) for additive changes or fixes; MAJOR (v2.0) for breaking changes to schema, channel, or flow structure. Current: **v1.1.2**. Both the filename and the workflow's internal `name` + `meta.version` should be bumped together on each material change, with a one-line entry added to `meta.changelog`.
+Semantic versioning: `__vMAJOR.MINOR`. Bump MINOR (v1.1, v1.2) for additive changes or fixes; MAJOR (v2.0) for breaking changes to schema, channel, or flow structure. Current: **v1.2.1**. Both the filename and the workflow's internal `name` + `meta.version` should be bumped together on each material change, with a one-line entry added to `meta.changelog`.
 
 ## What it does
 
@@ -138,7 +138,7 @@ Three things to configure for v1.1:
 
 **B. Practitioner mapping.** In that same `CATEGORY_MAP`, fill each category's `practitioner` (name) and `email`. The workflow assigns a practitioner deterministically by category; the AI also writes a short `aiNote` suggesting fit (and flags cross-category cases). Both appear in the results email and in Brevo (`PRACTITIONER`, `AI_NOTE`).
 
-**C. Resend email.** Verify `smallbusinesshelpdesk.co.za` in Resend (add the SPF/DKIM DNS records they provide), create an API key, set it as `RESEND_API_KEY`. The results email sends from `notifications@smallbusinesshelpdesk.co.za` to `elmarie@smallbusinesshelpdesk.co.za` on every completed intake — branded HTML with suggested practitioner, AI note, and full lead detail.
+**C. Resend email.** Two senders are used: the internal email to Elmarie sends from `notifications@smallbusinesshelpdesk.co.za`, and the USER confirmation email sends from `notifications@bot.smallbusinesshelpdesk.co.za`. BOTH the root domain AND the `bot.` subdomain must be verified in Resend separately (each needs its own DNS records). Verify `smallbusinesshelpdesk.co.za` (add the SPF/DKIM DNS records they provide), create an API key, set it as `RESEND_API_KEY`. The results email sends from `notifications@smallbusinesshelpdesk.co.za` to `elmarie@smallbusinesshelpdesk.co.za` on every completed intake — branded HTML with suggested practitioner, AI note, and full lead detail.
 
 **WhatsApp branding** (set in WhatsApp Manager, not the workflow): profile photo = circular `sbh` submark; display name = "Small Business Helpdesk"; complete About/category/website; pursue the green-tick verified badge. Every Orbie message now ends with an italic "_A Story Advantage Workflow_" signature (added in `[Step04]`).
 

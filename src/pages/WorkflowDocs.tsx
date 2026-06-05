@@ -25,7 +25,7 @@ export function WorkflowDocs() {
             Workflow Documentation
           </h1>
           <p className="font-body text-sm text-charcoal/50">
-            Orbie n8n WhatsApp bot · setup guide &amp; node map · v1.1.2
+            Orbie n8n WhatsApp bot · setup guide &amp; node map · v1.2.1
           </p>
         </div>
 
