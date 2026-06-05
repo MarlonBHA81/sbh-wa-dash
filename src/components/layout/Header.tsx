@@ -26,14 +26,24 @@ export function Header() {
 
       <div className="flex items-center gap-3">
         {canSwitchViews && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate(onTeamView ? '/stakeholder' : '/team')}
-            className="!border-white/30 !text-white hover:!bg-white/10 hover:!text-white"
-          >
-            {onTeamView ? 'Stakeholder view' : 'Team view'}
-          </Button>
+          <>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate(onTeamView ? '/stakeholder' : '/team')}
+              className="!border-white/30 !text-white hover:!bg-white/10 hover:!text-white"
+            >
+              {onTeamView ? 'Stakeholder view' : 'Team view'}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate('/team/docs')}
+              className="!border-white/30 !text-white hover:!bg-white/10 hover:!text-white hidden sm:inline-flex"
+            >
+              Docs
+            </Button>
+          </>
         )}
 
         {role && (

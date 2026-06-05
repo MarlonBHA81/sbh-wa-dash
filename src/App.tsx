@@ -4,6 +4,7 @@ import { ProtectedRoute } from './components/layout/ProtectedRoute'
 import { LoginPage } from './pages/Login'
 import { TeamDashboard } from './pages/TeamDashboard'
 import { StakeholderDashboard } from './pages/StakeholderDashboard'
+import { WorkflowDocs } from './pages/WorkflowDocs'
 import { Spinner } from './components/ui/Spinner'
 
 function RoleRedirect() {
@@ -37,6 +38,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute requiredRole="stakeholder">
             <StakeholderDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/team/docs"
+        element={
+          <ProtectedRoute requiredRole="team">
+            <WorkflowDocs />
           </ProtectedRoute>
         }
       />
