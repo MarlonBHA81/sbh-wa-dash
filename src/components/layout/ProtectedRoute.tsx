@@ -20,7 +20,10 @@ export function ProtectedRoute({ requiredRole, children }: ProtectedRouteProps) 
   }
 
   if (!session) return <Navigate to="/login" replace />
-  if (role !== requiredRole) return <Navigate to="/" replace />
+
+  // Team role can access both views; stakeholder only their own
+  const canAccess = role === 'team' || role === requiredRole
+  if (!canAccess) return <Navigate to="/" replace />
 
   return <>{children}</>
 }
