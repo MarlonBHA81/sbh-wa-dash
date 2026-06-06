@@ -31,6 +31,8 @@ export interface ConversationRow {
   focus_area: FocusArea | null
   struggle: string | null
   created_at: string
+  practitioner: string | null
+  channel: string | null
 }
 
 export interface EventRow {
@@ -106,6 +108,8 @@ export interface TeamKpis {
   completionRate: number
   leadsAwaitingFollowup: number
   approaching24hWindow: number
+  avgCompletionHours: number | null
+  optOutCount: number
 }
 
 export interface FunnelStep {

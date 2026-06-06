@@ -9,8 +9,10 @@ import {
   LabelList,
 } from 'recharts'
 import { Card } from '../ui/Card'
+import { Button } from '../ui/Button'
 import { Spinner } from '../ui/Spinner'
 import { EmptyState } from '../ui/EmptyState'
+import { exportToCSV } from '../../lib/utils'
 import type { CategoryStat } from '../../hooks/useCategoryBreakdown'
 
 interface CategoryBreakdownProps {
@@ -19,6 +21,19 @@ interface CategoryBreakdownProps {
 }
 
 export function CategoryBreakdown({ data, loading }: CategoryBreakdownProps) {
+  const handleExport = () => {
+    exportToCSV(
+      data.map(d => ({
+        Category: d.category,
+        Total: d.total,
+        Completed: d.completed,
+        'Not Completed': d.notCompleted,
+        'Completion Rate %': d.completionRate,
+      })),
+      'sbh-category-breakdown.csv',
+    )
+  }
+
   if (loading) {
     return (
       <Card title="Category breakdown">
@@ -46,9 +61,12 @@ export function CategoryBreakdown({ data, loading }: CategoryBreakdownProps) {
 
   return (
     <Card title="Category breakdown">
-      <p className="font-body text-xs text-charcoal/50 mb-4">
-        Stacked by outcome — completed vs. in-progress or abandoned
-      </p>
+      <div className="flex items-center justify-between mb-4">
+        <p className="font-body text-xs text-charcoal/50">
+          Stacked by outcome — completed vs. in-progress or abandoned
+        </p>
+        <Button variant="outline" size="sm" onClick={handleExport}>Export CSV</Button>
+      </div>
       <ResponsiveContainer width="100%" height={260}>
         <BarChart
           data={chartData}

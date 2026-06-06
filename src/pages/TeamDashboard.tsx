@@ -3,6 +3,9 @@ import { Layout } from '../components/layout/Layout'
 import { TeamKPIs } from '../components/team/TeamKPIs'
 import { FunnelChart } from '../components/team/FunnelChart'
 import { CategoryBreakdown } from '../components/team/CategoryBreakdown'
+import { VendorSplit } from '../components/team/VendorSplit'
+import { PractitionerTable } from '../components/team/PractitionerTable'
+import { AINoteFeed } from '../components/team/AINoteFeed'
 import { LeadTable } from '../components/team/LeadTable'
 import { TimeSeriesChart } from '../components/team/TimeSeriesChart'
 import { HeatmapChart } from '../components/team/HeatmapChart'
@@ -11,6 +14,8 @@ import { useConversations } from '../hooks/useConversations'
 import { useFunnelData } from '../hooks/useFunnelData'
 import { useCategoryBreakdown } from '../hooks/useCategoryBreakdown'
 import { useHeatmapData } from '../hooks/useHeatmapData'
+import { usePractitionerData } from '../hooks/usePractitionerData'
+import { useVendorData } from '../hooks/useVendorData'
 import { supabase } from '../lib/supabase'
 
 export function TeamDashboard() {
@@ -36,6 +41,8 @@ export function TeamDashboard() {
   const { steps, loading: funnelLoading } = useFunnelData(refreshKey)
   const { data: categoryData, loading: categoryLoading } = useCategoryBreakdown(refreshKey)
   const { cells, loading: heatmapLoading } = useHeatmapData()
+  const { data: practitionerData, loading: practitionerLoading } = usePractitionerData(refreshKey)
+  const { data: vendorData, loading: vendorLoading } = useVendorData(refreshKey)
 
   return (
     <Layout>
@@ -57,6 +64,13 @@ export function TeamDashboard() {
         </div>
 
         <CategoryBreakdown data={categoryData} loading={categoryLoading} />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <VendorSplit data={vendorData} loading={vendorLoading} />
+          <PractitionerTable data={practitionerData} loading={practitionerLoading} />
+        </div>
+
+        <AINoteFeed refreshKey={refreshKey} />
 
         <HeatmapChart cells={cells} loading={heatmapLoading} />
 

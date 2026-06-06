@@ -15,7 +15,7 @@ export function useTeamKPIs(refreshKey = 0) {
       setLoading(true)
       const { data, error: err } = await supabase
         .from('conversations')
-        .select('id, status, started_at, last_message_at')
+        .select('id, status, started_at, last_message_at, completed_at')
 
       if (cancelled) return
 
@@ -37,11 +37,31 @@ export function useTeamKPIs(refreshKey = 0) {
         status: string
         started_at: string
         last_message_at: string
+        completed_at: string | null
       }>
       const total = rows.length
       const completed = rows.filter(r =>
         r.status === 'lead_complete' || r.status === 'nonvendor_complete'
       ).length
+
+      const completedWithTime = rows.filter(r =>
+        (r.status === 'lead_complete' || r.status === 'nonvendor_complete') && r.completed_at
+      )
+      const avgCompletionHours = completedWithTime.length === 0
+        ? null
+        : Math.round(
+            completedWithTime.reduce((sum, r) => {
+              return sum + (new Date(r.completed_at!).getTime() - new Date(r.started_at).getTime()) / 3_600_000
+            }, 0) / completedWithTime.length * 10
+          ) / 10
+
+      const { count: rawOptOut } = await supabase
+        .from('events')
+        .select('id', { count: 'exact', head: true })
+        .eq('step', 'opt_out')
+      const optOutCount = rawOptOut ?? 0
+
+      if (cancelled) return
 
       setKpis({
         today:                 rows.filter(r => r.started_at >= todayStart).length,
@@ -54,6 +74,8 @@ export function useTeamKPIs(refreshKey = 0) {
           r.last_message_at < h20ago &&
           r.last_message_at > h24ago
         ).length,
+        avgCompletionHours,
+        optOutCount,
       })
       setLoading(false)
     }
