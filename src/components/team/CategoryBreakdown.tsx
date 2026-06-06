@@ -47,7 +47,18 @@ export function CategoryBreakdown({ data, loading }: CategoryBreakdownProps) {
   if (!data.length) {
     return (
       <Card title="Category breakdown">
-        <EmptyState description="No category data yet." />
+        <EmptyState description="No conversations found. Once WhatsApp intakes start, categories will appear here." />
+      </Card>
+    )
+  }
+
+  const allUnselected = data.every(d => d.category === '(no category)')
+  if (allUnselected) {
+    return (
+      <Card title="Category breakdown">
+        <EmptyState
+          description={`${data[0]?.total ?? 0} conversation(s) found but no focus area recorded. Check that n8n is writing the focus_area column — the field name must be snake_case (focus_area), not camelCase.`}
+        />
       </Card>
     )
   }

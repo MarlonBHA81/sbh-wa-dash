@@ -55,16 +55,20 @@ export function useCategoryBreakdown(refreshKey = 0) {
       }
 
       const result: CategoryStat[] = Array.from(map.entries())
-        .filter(([key]) => key !== '(no category)')
         .map(([key, val]) => ({
           category: key,
-          label: FOCUS_LABELS[key] ?? key,
+          label: key === '(no category)' ? 'Not selected yet' : (FOCUS_LABELS[key] ?? key),
           total: val.total,
           completed: val.completed,
           notCompleted: val.total - val.completed,
           completionRate: val.total === 0 ? 0 : Math.round(val.completed / val.total * 100),
         }))
-        .sort((a, b) => b.total - a.total)
+        .sort((a, b) => {
+          // Pin "Not selected yet" to the bottom
+          if (a.category === '(no category)') return 1
+          if (b.category === '(no category)') return -1
+          return b.total - a.total
+        })
 
       setData(result)
       setLoading(false)
