@@ -4,13 +4,7 @@ import type { FunnelStep } from '../types/database'
 
 const FUNNEL_STEPS = [
   'inbound',
-  'greeting',
-  'name_capture',
-  'vendor_check',
   'focus_area',
-  'struggle',
-  'lead_form',
-  'completion',
 ]
 
 export function useFunnelData(refreshKey = 0) {

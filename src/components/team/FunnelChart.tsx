@@ -14,14 +14,8 @@ import { EmptyState } from '../ui/EmptyState'
 import type { FunnelStep } from '../../types/database'
 
 const STEP_LABELS: Record<string, string> = {
-  inbound:      'Inbound',
-  greeting:     'Greeting',
-  name_capture: 'Name',
-  vendor_check: 'Vendor check',
-  focus_area:   'Focus area',
-  struggle:     'Struggle',
-  lead_form:    'Lead form',
-  completion:   'Complete',
+  inbound:    'Inbound',
+  focus_area: 'Category selected',
 }
 
 interface FunnelChartProps {
@@ -29,11 +23,7 @@ interface FunnelChartProps {
   loading: boolean
 }
 
-// Build a gradient of teal shades across funnel steps
-const STEP_COLORS = [
-  '#4e8a88', '#4e8585', '#4d8080', '#4d7b7b',
-  '#4c7676', '#4c7171', '#4b6c6c', '#4b6767',
-]
+const STEP_COLORS = ['#4e8a88', '#683f59']
 
 export function FunnelChart({ steps, loading }: FunnelChartProps) {
   if (loading) {
@@ -64,7 +54,7 @@ export function FunnelChart({ steps, loading }: FunnelChartProps) {
 
   return (
     <Card title="Intake funnel">
-      <ResponsiveContainer width="100%" height={280}>
+      <ResponsiveContainer width="100%" height={160}>
         <BarChart
           data={chartData}
           layout="vertical"

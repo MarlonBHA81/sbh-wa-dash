@@ -2,12 +2,14 @@ import { useState, useCallback, useEffect } from 'react'
 import { Layout } from '../components/layout/Layout'
 import { TeamKPIs } from '../components/team/TeamKPIs'
 import { FunnelChart } from '../components/team/FunnelChart'
+import { CategoryBreakdown } from '../components/team/CategoryBreakdown'
 import { LeadTable } from '../components/team/LeadTable'
 import { TimeSeriesChart } from '../components/team/TimeSeriesChart'
 import { HeatmapChart } from '../components/team/HeatmapChart'
 import { useTeamKPIs } from '../hooks/useTeamKPIs'
 import { useConversations } from '../hooks/useConversations'
 import { useFunnelData } from '../hooks/useFunnelData'
+import { useCategoryBreakdown } from '../hooks/useCategoryBreakdown'
 import { useHeatmapData } from '../hooks/useHeatmapData'
 import { supabase } from '../lib/supabase'
 
@@ -32,6 +34,7 @@ export function TeamDashboard() {
   const { kpis, loading: kpisLoading } = useTeamKPIs(refreshKey)
   const { conversations, loading: convsLoading } = useConversations(refreshKey)
   const { steps, loading: funnelLoading } = useFunnelData(refreshKey)
+  const { data: categoryData, loading: categoryLoading } = useCategoryBreakdown(refreshKey)
   const { cells, loading: heatmapLoading } = useHeatmapData()
 
   return (
@@ -52,6 +55,8 @@ export function TeamDashboard() {
           <FunnelChart steps={steps} loading={funnelLoading} />
           <TimeSeriesChart />
         </div>
+
+        <CategoryBreakdown data={categoryData} loading={categoryLoading} />
 
         <HeatmapChart cells={cells} loading={heatmapLoading} />
 

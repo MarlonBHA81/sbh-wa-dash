@@ -16,7 +16,7 @@ export function Layout({ children }: LayoutProps) {
         <p className="font-body text-xs text-charcoal/40">
           Built by{' '}
           <a
-            href="https://storyadvantage.co"
+            href="https://getstoryadvantage.com/saaiwf"
             target="_blank"
             rel="noopener noreferrer"
             className="text-primary hover:text-primary-hover transition-colors"
