@@ -9,6 +9,7 @@ import { AINoteFeed } from '../components/team/AINoteFeed'
 import { LeadTable } from '../components/team/LeadTable'
 import { TimeSeriesChart } from '../components/team/TimeSeriesChart'
 import { HeatmapChart } from '../components/team/HeatmapChart'
+import { ResetDataModal } from '../components/team/ResetDataModal'
 import { useTeamKPIs } from '../hooks/useTeamKPIs'
 import { useConversations } from '../hooks/useConversations'
 import { useFunnelData } from '../hooks/useFunnelData'
@@ -20,19 +21,14 @@ import { supabase } from '../lib/supabase'
 
 export function TeamDashboard() {
   const [refreshKey, setRefreshKey] = useState(0)
+  const [resetOpen, setResetOpen] = useState(false)
   const refresh = useCallback(() => setRefreshKey(k => k + 1), [])
 
-  // Realtime: re-fetch when any conversation changes
   useEffect(() => {
     const channel = supabase
       .channel('team-dashboard-rt')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'conversations' },
-        refresh,
-      )
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'conversations' }, refresh)
       .subscribe()
-
     return () => { void supabase.removeChannel(channel) }
   }, [refresh])
 
@@ -48,12 +44,8 @@ export function TeamDashboard() {
     <Layout>
       <div className="space-y-8">
         <div>
-          <h1 className="font-heading font-semibold text-2xl text-charcoal mb-1">
-            Team Dashboard
-          </h1>
-          <p className="font-body text-sm text-charcoal/50">
-            WhatsApp intake funnel · live data
-          </p>
+          <h1 className="font-heading font-semibold text-2xl text-charcoal mb-1">Team Dashboard</h1>
+          <p className="font-body text-sm text-charcoal/50">WhatsApp intake funnel · live data</p>
         </div>
 
         <TeamKPIs kpis={kpis} loading={kpisLoading} />
@@ -78,6 +70,21 @@ export function TeamDashboard() {
           <h2 className="font-heading font-semibold text-lg text-charcoal mb-4">Lead inbox</h2>
           <LeadTable conversations={conversations} loading={convsLoading} />
         </div>
+
+        <div className="border-t border-surface pt-6 flex items-center justify-between">
+          <div>
+            <p className="font-heading font-semibold text-xs text-charcoal/40 uppercase tracking-wide">Danger zone</p>
+            <p className="font-body text-xs text-charcoal/30 mt-0.5">Irreversible — use with care</p>
+          </div>
+          <button
+            onClick={() => setResetOpen(true)}
+            className="px-4 py-2 rounded-xl border border-rose-200 text-rose-500 font-body text-sm hover:bg-rose-50 hover:border-rose-300 hover:text-rose-600 transition-colors"
+          >
+            Reset data
+          </button>
+        </div>
+
+        <ResetDataModal open={resetOpen} onClose={() => { setResetOpen(false); refresh() }} />
       </div>
     </Layout>
   )
