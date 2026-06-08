@@ -4,9 +4,11 @@ import { FocusAreaBar } from '../components/stakeholder/FocusAreaBar'
 import { VendorDonut } from '../components/stakeholder/VendorDonut'
 import { MonthlyTrend } from '../components/stakeholder/MonthlyTrend'
 import { useStakeholderMetrics } from '../hooks/useStakeholderMetrics'
+import { useStakeholderFocusArea } from '../hooks/useStakeholderFocusArea'
 
 export function StakeholderDashboard() {
   const { metrics, trend, loading } = useStakeholderMetrics()
+  const { data: focusData, loading: focusLoading } = useStakeholderFocusArea()
 
   return (
     <Layout>
@@ -23,7 +25,7 @@ export function StakeholderDashboard() {
         <StakeholderKPIs metrics={metrics} loading={loading} />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <FocusAreaBar metrics={metrics} loading={loading} />
+          <FocusAreaBar data={focusData} loading={focusLoading} />
           <VendorDonut metrics={metrics} loading={loading} />
         </div>
 
