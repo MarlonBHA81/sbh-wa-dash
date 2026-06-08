@@ -36,7 +36,7 @@ export function CategoryBreakdown({ data, loading }: CategoryBreakdownProps) {
 
   if (loading) {
     return (
-      <Card title="Category breakdown">
+      <Card title="Focus area distribution">
         <div className="h-72 flex items-center justify-center">
           <Spinner />
         </div>
@@ -46,7 +46,7 @@ export function CategoryBreakdown({ data, loading }: CategoryBreakdownProps) {
 
   if (!data.length) {
     return (
-      <Card title="Category breakdown">
+      <Card title="Focus area distribution">
         <EmptyState description="No conversations found. Once WhatsApp intakes start, categories will appear here." />
       </Card>
     )
@@ -55,7 +55,7 @@ export function CategoryBreakdown({ data, loading }: CategoryBreakdownProps) {
   const allUnselected = data.every(d => d.category === '(no category)')
   if (allUnselected) {
     return (
-      <Card title="Category breakdown">
+      <Card title="Focus area distribution">
         <EmptyState
           description={`${data[0]?.total ?? 0} conversation(s) found but no focus area recorded. Check that n8n is writing the focus_area column — the field name must be snake_case (focus_area), not camelCase.`}
         />
@@ -71,7 +71,7 @@ export function CategoryBreakdown({ data, loading }: CategoryBreakdownProps) {
   }))
 
   return (
-    <Card title="Category breakdown">
+    <Card title="Focus area distribution">
       <div className="flex items-center justify-between mb-4">
         <p className="font-body text-xs text-charcoal/50">
           Stacked by outcome — completed vs. in-progress or abandoned
