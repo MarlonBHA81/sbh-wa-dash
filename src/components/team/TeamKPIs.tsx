@@ -61,6 +61,7 @@ export function TeamKPIs({ kpis, loading }: TeamKPIsProps) {
         loading={loading}
         accent={kpis && kpis.optOutCount > 0 ? 'rose' : 'teal'}
         subtext="STOP received"
+        tooltip="Counts STOP events logged before the record is deleted. Deleted rows are not included, so the true count may be slightly higher."
       />
     </div>
   )

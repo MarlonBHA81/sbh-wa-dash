@@ -30,6 +30,7 @@ export interface ConversationRow {
   vendor_number: string | null
   focus_area: FocusArea | null
   struggle: string | null
+  ai_note: string | null
   created_at: string
   practitioner: string | null
   channel: string | null

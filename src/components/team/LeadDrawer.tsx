@@ -65,6 +65,28 @@ export function LeadDrawer({ lead, onClose }: LeadDrawerProps) {
               </dd>
             </div>
           )}
+
+          {lead.ai_note && (
+            <div className="mt-4">
+              <dt className="text-xs font-heading font-semibold text-charcoal/50 uppercase tracking-wide mb-2">
+                AI Note
+              </dt>
+              <dd className="font-body text-sm text-charcoal bg-primary/5 border-l-2 border-primary rounded-r-xl p-4 leading-relaxed">
+                {lead.ai_note}
+              </dd>
+            </div>
+          )}
+
+          {lead.retention_until && (
+            <div className="mt-6 pt-4 border-t border-surface">
+              <dt className="text-xs font-heading font-semibold text-charcoal/50 uppercase tracking-wide mb-0.5">
+                Data retained until
+              </dt>
+              <dd className="font-body text-sm text-charcoal/60">
+                {formatDate(lead.retention_until)}
+              </dd>
+            </div>
+          )}
         </dl>
       )}
     </Drawer>

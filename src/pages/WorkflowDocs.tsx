@@ -25,7 +25,7 @@ export function WorkflowDocs() {
             Workflow Documentation
           </h1>
           <p className="font-body text-sm text-charcoal/50">
-            Orbie n8n WhatsApp bot · setup guide &amp; node map · v1.2.1
+          Orbie n8n WhatsApp bot · team reference guide · v2.2.0
           </p>
         </div>
 
@@ -47,32 +47,6 @@ export function WorkflowDocs() {
           </div>
         )}
 
-        <div className="mt-8 p-5 bg-surface/50 rounded-xl border border-surface-2">
-          <p className="font-heading font-semibold text-xs text-charcoal mb-1">
-            Keeping docs in sync with n8n
-          </p>
-          <p className="font-body text-xs text-charcoal/60 mb-3">
-            This page fetches <code className="bg-surface px-1 rounded font-mono">public/orbie-docs.md</code> at
-            runtime. To update it, replace that file and redeploy. For fully automatic sync when you save the
-            workflow in n8n, store the markdown in Supabase and have an n8n HTTP Request node upsert it on workflow
-            save — then update this component to read from Supabase instead.
-          </p>
-          <ol className="space-y-2">
-            {[
-              'In Supabase SQL editor: CREATE TABLE workflow_docs (key text primary key, content text, updated_at timestamptz default now());',
-              'Grant SELECT to authenticated, and INSERT/UPDATE to your service role.',
-              'In n8n, add an HTTP Request node to POST the markdown content to the Supabase REST API (Authorization: Bearer [service key]) whenever you export/save the workflow.',
-              'Update WorkflowDocs.tsx to call supabase.from("workflow_docs").select("content").eq("key","orbie").single() instead of fetch.',
-            ].map((step, i) => (
-              <li key={i} className="flex items-start gap-2.5 font-body text-xs text-charcoal/60">
-                <span className="mt-0.5 w-4 h-4 rounded-full bg-primary/20 text-primary text-[9px] font-semibold flex-shrink-0 flex items-center justify-center">
-                  {i + 1}
-                </span>
-                {step}
-              </li>
-            ))}
-          </ol>
-        </div>
       </div>
     </Layout>
   )
